@@ -144,8 +144,8 @@ tests/
 .DS_Store
 
 # Neural Network weights -----------------------------------------------------------------------------------------------
-weights/
-*.weights
+# weights/
+# *.weights
 *.pt
 *.pb
 *.onnx

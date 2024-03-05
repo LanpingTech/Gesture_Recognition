@@ -328,7 +328,7 @@ class Ui_Form(object):
         self.timer_video.timeout.connect(self.show_video_frame)
 
     def init_model(self):
-        self.model = YOLO('runs/detect/gesture_recognition/weights/best.pt')
+        self.model = YOLO('save_model/best.pt')
         # result = model('Light-HaGRID/images/val/395.jpg', device=[0])
         # result[0].save('result.jpg')
 
@@ -428,8 +428,18 @@ class Ui_Form(object):
                 result[0].save('./data/buff/result.jpg')
                 qImg = QImage()
                 qImg.load('./data/buff/result.jpg')
-                self.videoLabel.setPixmap(QtGui.QPixmap.fromImage(qImg))
-                self.videoLabel.setScaledContents(True)  # 设置图像自适应界面大小
+
+                pixmap = QPixmap.fromImage(qImg)
+                width = self.videoLabel.width()
+                height = self.videoLabel.height()
+                fitpixmap = pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+                self.videoLabel.setScaledContents(False)
+                self.videoLabel.setPixmap(fitpixmap)
+
+
+
+                # self.videoLabel.setPixmap(QtGui.QPixmap.fromImage(qImg))
+                # self.videoLabel.setScaledContents(True)  # 设置图像自适应界面大小
         else:
             flag = self.cap.open(video_name)
             
@@ -449,8 +459,15 @@ class Ui_Form(object):
                 result[0].save('./data/buff/result.jpg')
                 qImg = QImage()
                 qImg.load('./data/buff/result.jpg')
-                self.videoLabel.setPixmap(QtGui.QPixmap.fromImage(qImg))
-                self.videoLabel.setScaledContents(True)  # 设置图像自适应界面大小
+                #保持宽高比缩放到与videoLabel大小一致
+
+                pixmap = QPixmap.fromImage(qImg)
+                width = self.videoLabel.width()
+                height = self.videoLabel.height()
+                fitpixmap = pixmap.scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+                self.videoLabel.setScaledContents(False)
+                self.videoLabel.setPixmap(fitpixmap)
+                # self.videoLabel.setScaledContents(True)  # 设置图像自适应界面大小
                 #删除缓存图片
                 os.remove(img_path)
 
